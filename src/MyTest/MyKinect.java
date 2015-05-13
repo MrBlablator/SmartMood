@@ -21,7 +21,8 @@ public class MyKinect extends J4KSDK {
 	int windowHeight;
 	byte[] videoBuffer;
 	FileOutputStream f;
-	
+	SmileDetector smiley = new SmileDetector();
+	int smile_counter =0;
 	
 	
 	
@@ -64,7 +65,20 @@ public class MyKinect extends J4KSDK {
 		} catch (IOException e) {
         	e.printStackTrace();
         }
-        System.out.println("Done");
+        System.out.println("Image saved");
+        // Upload image here
+        
+        smiley.detectSmile("http://i.imgur.com/dtG2Yu5.jpg");
+        if (smiley.getSmile_value()>75)
+        {
+        	smile_counter = smile_counter +1;
+        	System.out.println("Smile detected");
+        	System.out.println(smile_counter+" smile(s) detected");
+        }
+        else
+        {
+        	System.out.println("No smile detected");
+        }
 		}
 	
 	@Override
@@ -109,7 +123,7 @@ public class MyKinect extends J4KSDK {
 		
 		
 		//Sleep for 20 seconds.
-		try {Thread.sleep(10000);} catch (InterruptedException e) {}
+		try {Thread.sleep(20000);} catch (InterruptedException e) {}
 		
 		
 		kinect.stop();		
