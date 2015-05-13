@@ -5,7 +5,13 @@ package MyTest;
 
 
 
-import java.util.Date;
+import java.awt.Color;
+import java.awt.image.BufferedImage;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
 
 import edu.ufl.digitalworlds.j4k.J4KSDK;
 
@@ -14,6 +20,9 @@ public class MyKinect extends J4KSDK {
 	int windowWidth;
 	int windowHeight;
 	byte[] videoBuffer;
+	FileOutputStream f;
+	
+	
 	
 	
 	public int getWindowWidth() {
@@ -28,7 +37,35 @@ public class MyKinect extends J4KSDK {
 	
 	}
 	
+
 	
+	public void writeVideoFramePNG(int video_width, int video_height ,byte array[])
+	{
+		try {
+			f = new FileOutputStream("captured_img.png");
+		} catch (FileNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		try {
+			
+			
+			BufferedImage img=new BufferedImage(video_width,video_height,BufferedImage.TYPE_INT_RGB);
+			int idx=0;
+			for(int y=0;y<video_height;y++)
+			for(int x=0;x<video_width;x++)
+			{
+				img.setRGB(x,y,(new Color(array[idx+0]&0xFF,array[idx+1]&0xFF,array[idx+2]&0xFF)).getRGB());
+				idx+=4;
+			}
+			
+			ImageIO.write(img,"PNG", f);
+		} catch (IOException e) {
+        	e.printStackTrace();
+        }
+        System.out.println("Done");
+		}
 	
 	@Override
 	public void onColorFrameEvent(byte[] color_frame) {
@@ -36,6 +73,9 @@ public class MyKinect extends J4KSDK {
 		windowWidth = getColorWidth();
 		windowHeight = getColorHeight();
 		videoBuffer = color_frame;
+		
+		writeVideoFramePNG(windowWidth,windowHeight,color_frame);
+		
 		
 	}
 
@@ -69,7 +109,7 @@ public class MyKinect extends J4KSDK {
 		
 		
 		//Sleep for 20 seconds.
-		try {Thread.sleep(20000);} catch (InterruptedException e) {}
+		try {Thread.sleep(10000);} catch (InterruptedException e) {}
 		
 		
 		kinect.stop();		

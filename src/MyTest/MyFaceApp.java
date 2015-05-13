@@ -17,7 +17,7 @@ public class MyFaceApp {
 		
 		//detection/detect
 		try {
-			result = httpRequests.detectionDetect(new PostParameters().setUrl("C:\\Users\\Rémi\\Pictures\\10915151_10152967623624166_4434175388763795447_n.jpg"));
+			result = httpRequests.detectionDetect(new PostParameters().setUrl("http://i.imgur.com/9Bi9zR9.jpg?1"));
 		} catch (FaceppParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
