@@ -1,0 +1,14 @@
+Report of smile detection
+
+captured_img0.png
+Error during smile detection
+captured_img1.png
+Error during smile detection
+captured_img2.png
+Error during smile detection
+captured_img3.png
+Error during smile detection
+captured_img4.png
+Error during smile detection
+captured_img5.png
+Error during smile detection
