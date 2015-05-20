@@ -1,6 +1,6 @@
 package MyTest;
 
-import edu.ufl.digitalworlds.j4k.J4KSDK;
+import edu.ufl.digitalworlds.j4k.J4KSDK ;
 
 public class MainProgram {
 	
