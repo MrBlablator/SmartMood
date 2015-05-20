@@ -14,7 +14,7 @@ public class MainProgram {
 			System.out.println("It is strongly adviced to exit this program and install a 64bit version of Java.\n");
 		}
 		
-		System.out.println("This program will run for about 20 seconds.");
+		System.out.println("This program will run for about 30 seconds.");
 		try {
 			kinect=new KinectVideoManager();
 		
@@ -22,9 +22,9 @@ public class MainProgram {
 			kinect.setServerUrl("https://rctest.ngrok.io");
 		
 			
-		
+	
 			kinect.start(J4KSDK.COLOR);
-			
+	
 			
 			}
 		catch (Exception e) {
@@ -33,7 +33,7 @@ public class MainProgram {
 		
 		
 		//Sleep for 20 seconds.
-		try {Thread.sleep(90000);} catch (InterruptedException e) {}
+		try {Thread.sleep(30000);} catch (InterruptedException e) {}
 		
 		
 		kinect.stop();		

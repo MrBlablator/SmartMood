@@ -29,7 +29,10 @@ public class SmileDetector {
 		
 		//detection/detect
 		try {
+			long startTime = System.currentTimeMillis();
 			 result = httpRequests.detectionDetect(new PostParameters().setUrl(image_path));
+			 long endTime = System.currentTimeMillis();
+			 System.out.println("Upload time: " + (endTime - startTime) + " milliseconds");
 			 System.out.println(result);
 		} catch (FaceppParseException e) {
 			// TODO Auto-generated catch block

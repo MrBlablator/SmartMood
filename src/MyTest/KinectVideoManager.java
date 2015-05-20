@@ -23,10 +23,12 @@ public class KinectVideoManager extends J4KSDK {
 	int windowWidth;
 	int windowHeight;
 	byte[] videoBuffer;
-	FileOutputStream f;
+	FileOutputStream exported_img;
+	FileOutputStream saved_img;
 	SmileDetector smiley = new SmileDetector();
 	int smile_counter =0;
 	String serverUrl;
+	int img_id = 0;
 	
 	public void setServerUrl(String url){
 		serverUrl = url;
@@ -56,10 +58,12 @@ public class KinectVideoManager extends J4KSDK {
 	}  
 	
 	
-	public void writeVideoFramePNG(int video_width, int video_height ,byte array[])
+	public void writeVideoFramePNG(int video_width, int video_height ,byte array[], int frame_id)
 	{
 		try {
-			f = new FileOutputStream("D:\\xampp\\htdocs\\img\\captured_img.png");
+			exported_img = new FileOutputStream("D:\\xampp\\htdocs\\img\\captured_img.png"+frame_id);
+			//org_img = new FileOutputStream(".\\video_stream\\img_"+frame_id);
+			
 		} catch (FileNotFoundException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -77,8 +81,9 @@ public class KinectVideoManager extends J4KSDK {
 				idx+=4;
 			}
 			
-			BufferedImage scaledImg = resize(img,1920/2,1080/2);
-			ImageIO.write(scaledImg,"PNG", f);
+			//ImageIO.write(img ,"PNG", org_img);
+			BufferedImage scaledImg = resize(img,1920/3,1080/3);
+			ImageIO.write(scaledImg,"PNG", exported_img);
 		} catch (IOException e) {
         	e.printStackTrace();
         }
@@ -99,21 +104,28 @@ public class KinectVideoManager extends J4KSDK {
 		videoBuffer = color_frame;
 		
 	
-		writeVideoFramePNG(windowWidth,windowHeight,color_frame);
-		
-		smiley.detectSmile(serverUrl + "//img//captured_img.png");
-        if (smiley.getSmile_value()>50)
-        {
-        	smile_counter = smile_counter +1;
-        	System.out.println("Smile");
-        	System.out.println(smile_counter+" smile(s) detected");
-        	smile_counter = 0;
-        }
-        else
-        {
-        	System.out.println("No smile");
-        	smile_counter = 0;
-        }
+		writeVideoFramePNG(windowWidth,windowHeight,color_frame,img_id);
+		String path = serverUrl + "//img//captured_img"+img_id+".png";
+		if(smiley.detectSmile(path))
+		{
+			if (smiley.getSmile_value()>50)
+			{
+				smile_counter = smile_counter +1;
+				System.out.println("Smile");
+				System.out.println(smile_counter+" smile(s) detected");
+				smile_counter = 0;
+			}
+			else
+			{
+				System.out.println("No smile");
+				smile_counter = 0;
+			}
+		}
+		else
+		{
+			System.out.println("Error during smile detection");
+		}
+		img_id=img_id+1;
 		
 		
 		
