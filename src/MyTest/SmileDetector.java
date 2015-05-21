@@ -9,7 +9,8 @@ public class SmileDetector {
 
 		FaceppResult result = null;
 		double smile_value=0;
-		
+		long upload_time = 0;
+		String error = null;
 		
 	public FaceppResult getResult() {
 		return result;
@@ -19,10 +20,14 @@ public class SmileDetector {
 		return smile_value;
 	}
 	
+	public double getUpload_time(){
+		return upload_time;
+	}
+	
 	public Boolean detectSmile(String image_path) {
 		
 		HttpRequests httpRequests = new HttpRequests("2f0c3fd5708b4b225968281727e754da", "tQoz3GSQNXuy69hz10fuw2FxEQexxhD1");
-		
+		upload_time = 0;
 		
 		
 		System.out.println("Smile detection");
@@ -32,10 +37,12 @@ public class SmileDetector {
 			long startTime = System.currentTimeMillis();
 			 result = httpRequests.detectionDetect(new PostParameters().setUrl(image_path));
 			 long endTime = System.currentTimeMillis();
+			 upload_time = endTime - startTime;
 			 System.out.println("Upload time: " + (endTime - startTime) + " milliseconds");
 			 System.out.println(result);
 		} catch (FaceppParseException e) {
 			// TODO Auto-generated catch block
+			error = "API error";
 			e.printStackTrace();
 			return false;
 		}
@@ -52,6 +59,7 @@ public class SmileDetector {
 			}
 			else
 			{
+				error = "No face detected";
 				System.out.println("No face detected");
 				return false;
 			}
@@ -59,10 +67,16 @@ public class SmileDetector {
 		} catch (FaceppParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			error = "API error";
 			return false;
 		}
 		
 
+	}
+
+	public String getError() {
+		// TODO Auto-generated method stub
+		return error;
 	}
 
 }

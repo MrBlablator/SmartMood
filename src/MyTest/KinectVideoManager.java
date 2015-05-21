@@ -162,7 +162,7 @@ public class KinectVideoManager extends J4KSDK {
 				try {
 					writer.write("Smile detected\r\n");
 					writer.write("Smile Confidence:"+ smiley.getSmile_value()+"\r\n");
-					writer.write(smile_counter+" smile(s) detected\r\n");
+					
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -195,12 +195,12 @@ public class KinectVideoManager extends J4KSDK {
 		else
 		{
 			try {
-				writer.write("Error during smile detection\r\n");
+				writer.write(smiley.getError()+"\r\n");
 				
 			} catch (IOException e) {
 			
 				}
-			infoDisplay.append("Error during smile detection, please refer to console\n");
+			infoDisplay.append(smiley.getError()+"\n");
 			System.out.println("Error during smile detection");
 		}
 		img_id=img_id+1;
@@ -210,6 +210,9 @@ public class KinectVideoManager extends J4KSDK {
 		} finally
 		{
 			try {
+				String upload_sentence = "Upload time: " + smiley.getUpload_time() + " milliseconds\r\n";
+				writer.write(upload_sentence);
+				writer.write(smile_counter+" smile(s) detected\r\n");
 				writer.close();
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
