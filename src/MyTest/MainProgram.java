@@ -2,6 +2,9 @@ package MyTest;
 
 import edu.ufl.digitalworlds.j4k.J4KSDK ;
 
+
+/* Class obsolete, replaced by class "MainWindow" */
+
 public class MainProgram {
 	
 	public static void main(String[] args)

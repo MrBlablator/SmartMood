@@ -22,6 +22,9 @@ import edu.ufl.digitalworlds.j4k.J4KSDK;
 
 import javax.swing.JTextArea;
 
+/* Principal class of the application, allows communication with the Kinect sensor and
+ * handle frame reception
+ */
 public class KinectVideoManager extends J4KSDK {
 
 	int windowWidth;
@@ -36,6 +39,7 @@ public class KinectVideoManager extends J4KSDK {
 	JTextArea infoDisplay = null;
 	BufferedWriter writer = null;
 	
+	// On call a report is created
 	public KinectVideoManager(){
 		report = new File("report.txt");
 		System.out.print("report created");
@@ -60,6 +64,8 @@ public class KinectVideoManager extends J4KSDK {
 		}
 		
 	}
+	
+	/* Basic getters and setters */
 	public void setInfoDisplay(JTextArea textBox){
 		infoDisplay = textBox;
 	}
@@ -81,6 +87,7 @@ public class KinectVideoManager extends J4KSDK {
 	}
 	
 
+	/* Resizing function if the image is too big */
 	public static BufferedImage resize(BufferedImage img, int newW, int newH) {  
 	    BufferedImage dimg = new BufferedImage(newW, newH, img.getType());  
 	    Graphics2D g = dimg.createGraphics();  
@@ -92,10 +99,11 @@ public class KinectVideoManager extends J4KSDK {
 	}  
 	
 	
+	/* Function that allows the conversion from a Kinect video frame to a png file* */
 	public void writeVideoFramePNG(int video_width, int video_height ,byte array[], int frame_id)
 	{
 		try {
-			exported_img = new FileOutputStream("D:\\xampp\\htdocs\\img\\captured_img"+frame_id+".png");
+			exported_img = new FileOutputStream("D:\\xampp\\htdocs\\img\\captured_img"+frame_id+".png"); // "hard" path to the web server
 			//org_img = new FileOutputStream(".\\video_stream\\img_"+frame_id);
 			
 		} catch (FileNotFoundException e1) {
@@ -105,7 +113,7 @@ public class KinectVideoManager extends J4KSDK {
 		
 		try {
 			
-			
+			/* Rendering of the image */
 			BufferedImage img=new BufferedImage(video_width,video_height,BufferedImage.TYPE_INT_RGB);
 			int idx=0;
 			for(int y=0;y<video_height;y++)
@@ -116,32 +124,38 @@ public class KinectVideoManager extends J4KSDK {
 			}
 			
 			//ImageIO.write(img ,"PNG", org_img);
+			
+			/* Scaling */
 			BufferedImage scaledImg = resize(img,1920/3,1080/3);
+			
+			/* Image writing */
 			ImageIO.write(scaledImg,"PNG", exported_img);
 		} catch (IOException e) {
         	e.printStackTrace();
         }
 		
+		/* log and information update */
 		infoDisplay.append("Image saved\n");
         System.out.println("Image saved");
         // Upload image here
         
 	}
 	
+	/* Function that is called everytime a frame is provided by the Kinect camera */
 	@Override
 	public void onColorFrameEvent(byte[] color_frame) {
 		
 		try {
+		/* Information update */
 		writer = new BufferedWriter(new FileWriter(report,true));
-		
 		windowWidth = getColorWidth();
 		windowHeight = getColorHeight();
-		
-		//windowWidth = 800;
-		//windowHeight = 600;
-		
-		videoBuffer = color_frame;
 		infoDisplay.append("Starting smile detection...\n");
+		
+		
+		videoBuffer = color_frame; // frame is added as property for future uses
+		
+		/* Frame saving */
 		
 		writeVideoFramePNG(windowWidth,windowHeight,color_frame,img_id);
 		String path = serverUrl + "//img//captured_img"+img_id+".png";
@@ -153,10 +167,14 @@ public class KinectVideoManager extends J4KSDK {
 			e.printStackTrace();
 		}
 		
+		/* Smile detection using SmileDetector class 
+		 * Information is updated depending on the smile detection result
+		 */
 		if(smiley.detectSmile(path))
 		{
 			if (smiley.getSmile_value()>50)
 			{
+				/* Information update */
 				smile_counter = smile_counter +1;
 		
 				try {
@@ -224,6 +242,9 @@ public class KinectVideoManager extends J4KSDK {
 		
 	}
 
+	
+	/* Never used */
+	
 	@Override
 	public void onDepthFrameEvent(short[] arg0, byte[] arg1, float[] arg2,
 			float[] arg3) {
@@ -238,6 +259,7 @@ public class KinectVideoManager extends J4KSDK {
 		
 	}
 
+	
 	public void setColorSize(int i, int j) {
 		// TODO Auto-generated method stub
 		windowWidth=i;

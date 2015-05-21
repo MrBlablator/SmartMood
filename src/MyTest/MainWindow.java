@@ -27,6 +27,7 @@ import javax.swing.SwingUtilities;
 import edu.ufl.digitalworlds.j4k.J4KSDK;
 
 
+/* Class that need to be run, basic GUI interface for the Smile Detection system */
 
 public class MainWindow extends JDialog {
 
@@ -34,22 +35,26 @@ public class MainWindow extends JDialog {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	KinectVideoManager kinect;
+
+	/* kinect sensor declaration */
+	KinectVideoManager kinect; 
 	
 	public MainWindow() {
 
-
+		/* Initialisation of the Kinect sensor */
         initKinect();
+        /* Initialisation of the Interface */
         initUI();
     }
 
     private void initKinect() {
 
     	try {
-			kinect = new KinectVideoManager();
+    		
+			kinect = new KinectVideoManager(); // Kinect sensor is instanciated
 		
 			
-			kinect.setServerUrl("https://rctest.ngrok.io");
+			kinect.setServerUrl("https://rctest.ngrok.io"); // Web server url is provided here
 			
 			
 			}
@@ -61,27 +66,32 @@ public class MainWindow extends JDialog {
 
 	private void initUI() {
     	
-    	JPanel basic = new JPanel();
+		/*Initialisation of the main panel */
+		JPanel basic = new JPanel();
     	basic.setLayout(new BoxLayout(basic, BoxLayout.Y_AXIS));
     	add(basic);
     	
-    	JPanel infoPanel = new JPanel(new BorderLayout(5, 5));
+    	/*Initialisation of the Text display panel */
+    	
+    	JPanel infoPanel = new JPanel(new BorderLayout(5, 5)); // Containing Panel
     	infoPanel.setBorder(BorderFactory.createEmptyBorder(15, 25, 15, 25));
     	infoPanel.setMinimumSize(new Dimension(450,300));
     	
     	
-    	JTextArea pane = new JTextArea();
+    	JTextArea pane = new JTextArea(); // Text panel
     	String text = "Click on \"Start Smile Detection\" to start\n Results will be stored in the binary folder.";
     	pane.setText(text);
         pane.setEditable(false);
        
-        kinect.setInfoDisplay(pane);
-        JScrollPane scroll = new JScrollPane(pane);
+        kinect.setInfoDisplay(pane); // Linking the text panel with the Kinect
+        
+        JScrollPane scroll = new JScrollPane(pane); // Scroll panel for easier display of information
     	infoPanel.add(scroll);
     	
-    	basic.add(infoPanel);
+    	basic.add(infoPanel); // Adding the text disply panel to the main panel
     	
     	
+    	/* Button implementation */
     	 JPanel bottom = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 
          JButton start = new JButton("Start Smile Detection");
@@ -96,6 +106,9 @@ public class MainWindow extends JDialog {
          bottom.add(close);
          basic.add(bottom);
     	
+         /* Button action implementation */
+         
+         // On closing, stop the Kinect and exit
          close.addActionListener(new ActionListener() {
         	    @Override
         	    public void actionPerformed(ActionEvent event) {
@@ -104,6 +117,7 @@ public class MainWindow extends JDialog {
         	    }
         	});
          
+         // "Start" button starts the Kinect sensor
          start.addActionListener(new ActionListener() {
         	    @Override
         	    public void actionPerformed(ActionEvent event) {
@@ -113,6 +127,7 @@ public class MainWindow extends JDialog {
         	    }
         	});
          
+         // "Stop" button stops the Kinect sensor 
          stop.addActionListener(new ActionListener() {
      	    @Override
      	    public void actionPerformed(ActionEvent event) {
@@ -122,6 +137,7 @@ public class MainWindow extends JDialog {
      	});
     	
     
+        // Details for main window
         setTitle("Smile Detection Window");
         setSize(450, 320);
         setLocationRelativeTo(null);
@@ -130,6 +146,7 @@ public class MainWindow extends JDialog {
     
    
 
+	/* Launch the application and show the window */
     public static void main(String[] args) {
 
         EventQueue.invokeLater(new Runnable() {
