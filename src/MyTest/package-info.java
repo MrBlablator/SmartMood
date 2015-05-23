@@ -1,8 +1,0 @@
-/**
- * 
- */
-/**
- * @author Remi
- *
- */
-package MyTest;
