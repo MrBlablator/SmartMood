@@ -1,10 +1,5 @@
 package myTest;
 
-
-
-
-
-
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
@@ -39,6 +34,9 @@ public class KinectVideoManager extends J4KSDK {
 	int img_id = 0;
 	JTextArea infoDisplay = null;
 	BufferedWriter writer = null;
+
+	private String username, password;
+	private ImageUpload iu;
 	
 	// On call a report is created
 	public KinectVideoManager(){
@@ -63,6 +61,7 @@ public class KinectVideoManager extends J4KSDK {
 				e.printStackTrace();
 			}
 		}
+
 		
 	}
 	
@@ -86,7 +85,13 @@ public class KinectVideoManager extends J4KSDK {
 		return videoBuffer;
 	
 	}
-	
+
+	public void setFTPLogin(String username, String password) {
+		this.username = username;
+		this.password = password;
+
+		iu = new ImageUpload();
+	}
 
 	/* Resizing function if the image is too big */
 	public static BufferedImage resize(BufferedImage img, int newW, int newH) {  
@@ -150,9 +155,8 @@ public class KinectVideoManager extends J4KSDK {
 		windowWidth = getColorWidth();
 		windowHeight = getColorHeight();
 		writeVideoFramePNG(windowWidth,windowHeight,color_frame,img_id);
-		String img_path = serverUrl + "//img//captured_img"+img_id+".png";
+		String img_path = iu.uploadImage("captured_img"+img_id+".png", "D:\\xampp\\htdocs\\img\\captured_img"+img_id+".png");
 		videoBuffer = color_frame; // frame is added as property for future uses
-		
 		
 		/* Smile detection using SmileDetector class 
 		 * Information is updated depending on the smile detection result
@@ -167,7 +171,6 @@ public class KinectVideoManager extends J4KSDK {
 		ThreadSmile smileyThread = new ThreadSmile("captured_img"+img_id+".png",img_path,writer,smile_counter);
 		smileyThread.start();
 	
-		
 		img_id=img_id+1;
 		
 		

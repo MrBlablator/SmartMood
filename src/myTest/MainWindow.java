@@ -91,7 +91,19 @@ public class MainWindow extends JDialog {
     	
     	basic.add(infoPanel); // Adding the text disply panel to the main panel
     	
-    	
+        JTextField username = new JTextField(20);
+        JPasswordField password = new JPasswordField(20);
+        
+        JPanel panel = new JPanel();
+        panel.add(new JLabel("Username:"));
+        panel.add(username);
+        basic.add(panel);
+        
+        panel = new JPanel();
+        panel.add(new JLabel("Password:"));
+        panel.add(password);
+        basic.add(panel);
+
     	/* Button implementation */
     	 JPanel bottom = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 
@@ -123,9 +135,11 @@ public class MainWindow extends JDialog {
          start.addActionListener(new ActionListener() {
         	    @Override
         	    public void actionPerformed(ActionEvent event) {
+
+                    kinect.setFTPLogin(username.getText(), new String(password.getPassword()));
         	      
-        	       pane.setText("");
-        	       kinect.start(J4KSDK.COLOR);
+        	        pane.setText("");
+        	        kinect.start(J4KSDK.COLOR);
         	    }
         	});
          
