@@ -106,6 +106,8 @@ public class MainWindow extends JDialog {
          bottom.add(stop);
          bottom.add(close);
          basic.add(bottom);
+         
+         /* Foo */
     	
          /* Button action implementation */
          
