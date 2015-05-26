@@ -14,6 +14,7 @@ public class ThreadSmile  extends Thread {
 	boolean smile;
 	AtomicInteger smile_counter;
 	
+	/* Hello */
 	ThreadSmile(String image_name, String image_link, BufferedWriter my_writer, AtomicInteger current_smile_counter){
 		img_name = image_name;
 		img_path= image_link;
